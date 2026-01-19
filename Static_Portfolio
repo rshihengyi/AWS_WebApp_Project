@@ -39,7 +39,7 @@
             width: 220px;
             height: 220px;
             object-fit: cover;
-            border-radius: 50%;
+            border-radius: 75%;
             border: 3px solid #1f2933;
         }
 
@@ -72,9 +72,7 @@
         <div>
             <h2>About Me</h2>
             <p>
-                I am an aspiring cloud and infrastructure engineer with experience
-                in AWS, containerization, and systems engineering. This portfolio
-                highlights my projects and technical background.
+                I am not a bum.
             </p>
         </div>
     </div>
@@ -85,7 +83,7 @@
     <ul>
         <li>Static website hosted on EC2 with Docker and HTTPS</li>
         <li>AWS networking and security group configurations</li>
-        <li>Cloud fundamentals and DevOps tooling</li>
+        <li>Max Pullups: 17</li>
     </ul>
 </section>
 
@@ -95,3 +93,4 @@
 
 </body>
 </html>
+
