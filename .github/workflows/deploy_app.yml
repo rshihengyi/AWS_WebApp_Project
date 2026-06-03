@@ -30,7 +30,7 @@ jobs:
       # Create image with dockerhub credientials
       - name: Build Image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}} .
+          docker build -t  ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}} .
           docker image tag ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}} ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:latest
 
       # Push image with unique tag and another image with latest tag
