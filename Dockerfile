@@ -1,6 +1,6 @@
 FROM alpine:latest
 RUN apk update
-RUN apd add bash
+RUN apk add bash
 RUN apk add apache2
 RUN rm /var/www/localhost/htdocs/index.html
 RUN rm -rf /var/cache/apk/*
