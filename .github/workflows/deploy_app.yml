@@ -11,7 +11,10 @@ jobs:
   Deploy_WebApp:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    
+    outputs:
+      instance_id: ${{ steps.tf_output.outputs.instance_id }}
+      
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -34,14 +37,17 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:latest
-          
-      # Copy webapp into ec2 
-      - name: Deploy to EC2 over SSH
-        uses: appleboy/ssh-action@v1.2.0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.1.0
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_KEY }}
+          role-to-assume: arn:aws:iam::536984667329:role/Access_TF_resources_arch1
+          aws-region: us-east-1
+
+      # Using output from resource block
+      - name: Get Instance ID
+        id: tf_output
+        run: echo "instance_id=$(terraform output -raw ec2_instance_id)" >> $GITHUB_OUTPUT
 
       # Pull created image from docker hub and run container hosted on port 8080
       - name: Run container with image
