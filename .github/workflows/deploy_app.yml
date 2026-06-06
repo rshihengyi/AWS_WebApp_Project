@@ -1,32 +1,40 @@
-# This is a basic workflow to help you get started with Actions
-
 name: App Deploy
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   workflow_dispatch:
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# A workflow is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   Deploy_WebApp:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    
+
+    # Exposes instance ID for other jobs to use with (needs.Deploy_WebApp.outputs.instance_id)
+    # Since there is only 1 job, this block is not needed
     outputs:
       instance_id: ${{ steps.tf_output.outputs.instance_id }}
       
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      
+
+      # AWS authentication needed before terraform and ssm steps
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.1.0
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ID }}:role/Access_TF_resources_arch1
+          aws-region: us-east-1
+
+      # Logs into DockerHub with credientials stored in secrets
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Create image with dockerhub credientials
+      # Create image with Dockerfile from repo
       - name: Build Image
         run: |
           docker build -t  ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}} .
@@ -38,30 +46,32 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:latest
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6.1.0
-        with:
-          role-to-assume: arn:aws:iam::536984667329:role/Access_TF_resources_arch1
-          aws-region: us-east-1
-
-      # Using output from resource block
+      # Store ec2 ID into tf_outputs
+      # Note: terraform init needed to access remote state to read outputs
       - name: Get Instance ID
         id: tf_output
-        run: echo "instance_id=$(terraform output -raw ec2_instance_id)" >> $GITHUB_OUTPUT
+        run: |
+          terraform init
+          echo "instance_id=$(terraform output -raw ec2_instance_id)" >> $GITHUB_OUTPUT
 
       # Pull created image from docker hub and run container hosted on port 8080
+      # Sends ssm commands
       - name: Run container with image
         run: | 
-            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+            aws ssm send-command \
+            --instance-ids ${{ steps.tf_output.outputs.instance_id }} \
+            --document-name "AWS-RunShellScript" \
+            --parameters commands = '[
+           
+            "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}",
 
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}}
+            "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}}",
 
-            docker stop mywebapp || true
-            docker rm mywebapp || true
+            "docker stop mywebapp || true",
+            "docker rm mywebapp || true",
 
-            docker run -d --name mywebapp -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}}
-
-          
+            "docker run -d --name mywebapp -p 8080:80 ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}}"
+            ]'
         
         
         
