@@ -32,6 +32,8 @@ jobs:
           role-to-assume: arn:aws:iam::${{ secrets.AWS_ID }}:role/GitHubActions-Trust-Policy-WA
           aws-region: us-east-1
 
+      - uses: hashicorp/setup-terraform@v3
+
       # Logs into DockerHub with credientials stored in secrets
       - name: Log in to DockerHub
         uses: docker/login-action@v3
