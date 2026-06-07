@@ -29,7 +29,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6.1.0
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ID }}:role/Access_TF_resources_arch1
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ID }}:role/GitHubActions-Trust-Policy-WA
           aws-region: us-east-1
 
       # Logs into DockerHub with credientials stored in secrets
