@@ -47,14 +47,6 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:${{github.sha}}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/mywebapp:latest
 
-      # Store ec2 ID into tf_outputs
-      # Note: terraform init needed to access remote state to read outputs
-      - name: Get Instance ID
-        id: tf_output
-        run: |
-          terraform init
-          echo "instance_id=$(terraform output -raw ec2_instance_id)" >> $GITHUB_OUTPUT
-
       # Pull created image from docker hub and run container hosted on port 8080
       # Sends ssm commands
       - name: Run container with image
