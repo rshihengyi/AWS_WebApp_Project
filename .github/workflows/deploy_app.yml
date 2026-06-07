@@ -60,8 +60,8 @@ jobs:
       - name: Run container with image
         run: | 
             aws ssm send-command \
-            --instance-ids "i-0505f69dc1c1f5f13" \
             --document-name "AWS-RunShellScript" \
+            --targets "Key=tag:App,Values=Static-Portfolio" "Key=tag:Env,Values=dev" \
             --parameters 'commands = [
            
             "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}",
