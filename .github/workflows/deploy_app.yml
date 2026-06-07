@@ -68,7 +68,7 @@ jobs:
             aws ssm send-command \
             --instance-ids ${{ steps.tf_output.outputs.instance_id }} \
             --document-name "AWS-RunShellScript" \
-            --parameters commands = '[
+            --parameters 'commands = [
            
             "docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}",
 
