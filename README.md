@@ -14,7 +14,7 @@ then pushed into Dockerhub. AWS SSM commands are send to the EC2 instance using 
 from port 8080 to port 80 of the container. Refer to the GitHub Actions Workflows section from the Project Documentation for further technical detail.
 
 <h1>Full GitHub Actions Workflow Architecture Flow Chart</h1>
-<img width="1800" height="1295" alt="image" src="https://github.com/user-attachments/assets/f4d6fefe-8335-4769-8e63-188215b7b2f8" />
+<img width="1745" height="1287" alt="image" src="https://github.com/user-attachments/assets/83024a32-2583-4485-8bdf-800130813890" />
 
 <h1>Project Documentation</h1>
 https://1drv.ms/w/c/d18af1f250bff2cb/IQCMALwxe5DlRImUC7b7NCChAR8tm6k4imerkNQGmFQoZ4o?e=khMGve 
