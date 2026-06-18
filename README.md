@@ -1,7 +1,7 @@
 <h1>AWS Static Portfolio Web Application Project Summary</h1>
 The aim of this project is to automate the deployment of a containerized static webpage into an AWS cloud architecture provisioned in Terraform using CI/CD pipelines with GitHub Actions. The project is split into two parts, infrastructure and app deployment automation which is done with both the AWS_WebApp_Project_Terraform
 and AWS_WebApp_Project repositories. 
-
+  
 <h1>Web Application Deployment</h1>
 This repository contains the HTML code to create the static webpage and the Dockerfile uesd to create the Docker image. The image uses the alpine Linux distributor and
 the web page is hosted on the Apache2 webserver. The Docker image replaces the Apache2 index page with the Static_Portfolio webpage. The image is ran in the EC2 instance
