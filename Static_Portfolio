@@ -59,20 +59,22 @@
 <body>
 
 <header>
-    <h1>hi GOAT</h1>
-    <p>Cloud | DevOps | Engineering Portfolio</p>
-    <p>i LIke wEewShoOoO</p>
+    <h1>Robert Heng</h1>
+    <p>Cloud Engineering Portfolio</p>
+    <p></p>
 </header>
 
 <section>
     <div class="profile">
         
-        <img src="Me_from_Ledo_squad.jpg" alt="Profile Image">
+        <img src="Me.jpg" alt="Profile Image">
 
         <div>
             <h2>About Me</h2>
             <p>
-                I am not a bum.
+                Hey! My name is Robert and one of my major goals is to pursue a career in cloud engineering. Despite graduating with an electrical engineering degree,
+my interests shifted after a summer internship with SAIC where I was introduced to cloud engineering. I was fascinated with the behind the scenes infrastructure that 
+allowed external users to reach a website and enjoyed working with experienced cloud engineers to troubleshoot the system.
             </p>
         </div>
     </div>
@@ -81,15 +83,15 @@
 <section>
     <h2>Projects</h2>
     <ul>
-        <li>Static website hosted on EC2 with Docker and HTTPS</li>
-        <li>AWS networking and security group configurations</li>
-        <li>Max Pullups: 17</li>
+        <li>AWS Cloud Web Application Deployment</li>
+        <ul>
+            <li>Containerized webpage with Docker</li>
+            <li>Infrastructure provisioned with Terraform</li>
+            <li>Infrastructure and container deployment automated with GitHub Action CI/CD pipeline</li>
+        </ul>
+    
     </ul>
 </section>
-
-<footer>
-    © 2026 TheMemeKing. All rights reserved.
-</footer>
 
 </body>
 </html>
